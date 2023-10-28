@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
     <Navbar />
-      <Routes>
+      <Routes>*
         <Route path='/' element={<Home />}/>
         <Route path='/card/:id' element={<BlogDetails />}/>
         <Route path='/signup' element={<SignUp />}/>
