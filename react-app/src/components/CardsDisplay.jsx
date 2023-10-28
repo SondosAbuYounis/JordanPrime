@@ -82,9 +82,12 @@ const CardsDisplay = () => {
           <li
 
             key={i}
-            className={i + 1 === currentPage ? 'active' : ''}
-            onClick={() => paginate(i + 1)} 
-            class='w-8 h-8 border rounded-full bg-[#ffffff] hover:bg-[#4C7581] hover:text-[#ffffff] shadow text-[#4C7581] text-center p-1 m-1 '
+            className={i + 1 === currentPage ? 'active bg-[#4C7581] text-[#ffffff]' : ''}
+            onClick={() =>{ 
+              paginate(i + 1);
+            }}
+            class={`${
+              i + 1 === currentPage ? 'w-8 h-8 border rounded-full bg-[#4C7581] text-[#ffffff] shadow  text-center p-1 m-1' : 'w-8 h-8 border rounded-full bg-[#ffffff] hover:bg-[#4C7581] hover:text-[#ffffff] shadow text-[#4C7581] text-center p-1 m-1' }`}
           >
             {i + 1}
           </li>

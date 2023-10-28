@@ -60,15 +60,47 @@ const SignUpForm = () => {
       [name]: value,
     });
   };
+  
 
+
+
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You should perform validation here and send the data to the backend endpoint.
-    // Implement validation and API call logic according to your backend.
+    // Password validation
+    const validatePassword = (password) => {
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}$/;
+      return passwordRegex.test(password);
+    };
+    // Email Validation 
+    const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+    };
+    const isValid = validateEmail(formData.email);
+    setIsEmailValid(isValid);
+    // UserName Validation 
+    const validateUserName = (username) => {
+    const nameRegex = /^[a-zA-Z0-9]{3,6}$/;
+    return nameRegex.test(username);
+    };
+    const nameIsValid = validateUserName(formData.username);
+    setIsNameValid(nameIsValid);
 
-    // Example validation (you should replace this with your own logic):
+    const isPasswordValid = validatePassword(formData.password);
+    if (!isPasswordValid) {
+      setIsPasswordValid(false);
+    } else // Password match Validation
     if (formData.password !== formData.password2) {
-      alert('Passwords do not match');
+      const matchPass = document.getElementById("form");
+      const isMatchPass = document.createElement("span");
+      // styling the error message 
+      isMatchPass.style.color = "red";
+      isMatchPass.style.fontSize = '0.65rem';
+      isMatchPass.textContent = "Passwords don't match";
+      matchPass.appendChild(isMatchPass)
     } else {
       // Endpoint
       fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -87,6 +119,8 @@ const SignUpForm = () => {
           console.error('Error:', error);
         });
     }
+
+
   //   if (validForm) {
   //     try {
   //       const response = await axios.post(
@@ -100,7 +134,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div style={FormDivStyle}>
+    <div style={FormDivStyle} >
     <form onSubmit={handleSubmit} style={FormStyle} >
     <div className="text-2xl pb-16 pt-4">SIGN UP</div>
       <div className='flex-center'>
@@ -114,8 +148,9 @@ const SignUpForm = () => {
           placeholder='Username'
         />
       </div>
+      {!isNameValid && (
       <p style={erroMessage}>Username should be 3-6 characters without any special characters</p>
-      {/* REGEX ^[a-zA-Z0-9]{3,6}$ */}
+      )}
       <div>
         <label></label>
         <input
@@ -127,7 +162,9 @@ const SignUpForm = () => {
           onChange={handleChange}
         />
       </div>
+      {!isEmailValid && (
       <span style={erroMessage}>please enter a valid email address </span>
+       )} 
       {/* REGEX  */}
       <div>
         <label></label>
@@ -140,9 +177,12 @@ const SignUpForm = () => {
           onChange={handleChange}
         />
       </div>
-      <span style={erroMessage}>Password should be 8-20 characters with at least 1 letter, 1 number and 1 special character</span>
+      {!isPasswordValid && (
+        <span style={erroMessage}>Password should be 8-20 characters with at least 1 letter, 1 number and 1 special character</span>
+      )}
       {/* REGEX ^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}$ */}
-      <div>
+      <div id="form">
+        <div>
         <label></label>
         <input
           type="password"
@@ -152,8 +192,9 @@ const SignUpForm = () => {
           value={formData.password2}
           onChange={handleChange}
         />
+        </div>
       </div>
-      <span style={erroMessage}>Passwords don't match</span>
+      {/* <span style={erroMessage}>Passwords don't match</span> */}
       {/* REGEX ^[A-Za-z0-9+_.-]+@(.+)$ */}
       <button type="submit"className=" px-3 pb-2 text-[#4C7581] bg-white border border-2 border-[#4C7581]  focus:outline-none hover:bg-[#4C7581] hover:text-[#FFFFFF] text-xs font-semibold rounded-lg text-xs px-5 py-2 mt-16 mb-8 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Sign Up</button>
         <div className='text-[0.75rem] mb-1'>Already have an account ? <Link to='/signin' className='hover:text-[#4C7581] underline decoration-solid'>Sing In</Link></div>

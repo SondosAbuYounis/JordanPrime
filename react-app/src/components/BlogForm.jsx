@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import deadseaone from '../assets/deadseaone.png'
+import axios from '../api/axios';
 
 export const BlogForm = () => {
     // Input border style 
@@ -60,7 +61,16 @@ export const BlogForm = () => {
         place_name:'',
         place_location:'',
 
-      });
+    });
+    // Invalid Credintials 
+    const invalidCredintials = {
+    fontSize: '1rem',
+    padding: '0.5rem',
+    color: '#FF0000',
+    maxWidth: '20rem',
+    textAlign: 'start',
+    }
+
       const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -68,33 +78,19 @@ export const BlogForm = () => {
           [name]: value,
         });
       };
+      const [error, setError] = useState('');
       const handleSubmit = (e) => {
         e.preventDefault();
-        // You should perform validation here and send the data to the backend endpoint.
-        // Implement validation and API call logic according to your backend.
-    
-        // Example validation (you should replace this with your own logic):
-        if (formData.password !== formData.password2) {
-          alert('Passwords do not match');
-        } else {
-          // Endpoint
-          fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              // Handle the response from the backend here
-              console.log(data);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
-        }
-      };
+        // End point 
+        axios.post('/api/login', formData)
+        .then((response) => {
+          window.location.href = '/card/:id';
+          // history.push('/');
+        })
+        .catch((error) => {
+          setError('Something went wrong');
+        });
+    };
     
   return (
     <form>
@@ -112,6 +108,7 @@ export const BlogForm = () => {
                 placeholder="Blog Tilte"
                 className='w-[19rem]'
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -124,6 +121,7 @@ export const BlogForm = () => {
                 value={formData.the_user}
                 className='w-[19rem]'
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -136,6 +134,7 @@ export const BlogForm = () => {
                 value={formData.place_name}
                 className='w-[19rem]'
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -148,6 +147,7 @@ export const BlogForm = () => {
                 value={formData.place_location}
                 className='w-[19rem]'
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -179,7 +179,7 @@ export const BlogForm = () => {
             >
               Publish Blog
             </button>
- 
+            {error && <div style={invalidCredintials}>{error}</div>}
           </form>
         </div>
       </div>
