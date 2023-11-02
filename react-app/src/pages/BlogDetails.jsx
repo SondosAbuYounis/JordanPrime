@@ -10,20 +10,17 @@ import { useParams } from 'react-router-dom';
 
 export const BlogDetails = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-        setBlog(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, [id]);
+    axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+          .then ((response)=>{
+          setBlog(response.data);
+        })
+        .catch ((error) => {
+          console.error("Error fetching data: ", error);
+        });
+    }, []);
 
   if (!blog) {
     return <div>Loading...</div>;

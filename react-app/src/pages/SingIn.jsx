@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import deadseatwo from '../assets/deadseatwo.png'
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { Await } from 'react-router-dom';
+import { ReactDOM } from 'react';
+import createPortal from 'react-dom';
+import ModalEx from '../portals/ModalEx';
 
 const SingIn = () => {
     // Input border style 
@@ -56,11 +59,13 @@ const SingIn = () => {
           textAlign: 'start',
       }
 
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -106,11 +111,13 @@ const SingIn = () => {
     // Send the form data to the server for authentication
     axios.post('/api/login', formData)
       .then((response) => {
-        window.location.href = '/';
+        navigate('/')
+        console.log(response.data);
         // history.push('/');
       })
       .catch((error) => {
         setError('Invalid credentials. Please try again.');
+        console.log(error.data);
       });
   };
 
@@ -142,11 +149,10 @@ const SingIn = () => {
   //     console.error('Error:', error);
   //   }
   // };
-
-
+  const [isOpen, setOpen]= useState(false)
   return (
-    <div style={FormDivStyle}>
-    <form onSubmit={handleSubmit} style={FormStyle} >
+    <div style={FormDivStyle} >
+    <form onSubmit={handleSubmit} style={FormStyle} id='anID' >
     <div className="text-2xl pb-16 pt-4">SIGN IN</div>
       <div className='flex-center'>
         <label></label>
@@ -176,7 +182,10 @@ const SingIn = () => {
       {!isPasswordValid && (
       <p style={erroMessage}>Please enter a valid password</p>
       )}
-      <button type="submit"className=" px-3 pb-2 text-[#4C7581] bg-white border border-2 border-[#4C7581]  focus:outline-none hover:bg-[#4C7581] hover:text-[#FFFFFF] text-xs font-semibold rounded-lg text-xs px-5 py-2 mt-16 mb-8 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Sign In</button>
+      <div>
+      <button onClick={()=> setOpen(true)} type="submit"className=" px-3 pb-2 text-[#4C7581] bg-white border border-2 border-[#4C7581]  focus:outline-none hover:bg-[#4C7581] hover:text-[#FFFFFF] text-xs font-semibold rounded-lg text-xs px-5 py-2 mt-16 mb-8 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Sign In</button>
+        <ModalEx  isOpen= {isOpen} onClose={()=>setOpen(false)}/>
+      </div>
       {error && <div style={invalidCredintials}>{error}</div>}
     </form>
    

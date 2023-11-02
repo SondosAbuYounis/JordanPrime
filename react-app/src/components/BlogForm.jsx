@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link , useNavigate} from 'react-router-dom';
 import deadseaone from '../assets/deadseaone.png'
 import axios from '../api/axios';
 
@@ -70,7 +71,7 @@ export const BlogForm = () => {
     maxWidth: '20rem',
     textAlign: 'start',
     }
-
+     const navigate = useNavigate();
       const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -78,13 +79,15 @@ export const BlogForm = () => {
           [name]: value,
         });
       };
+
+      
       const [error, setError] = useState('');
       const handleSubmit = (e) => {
         e.preventDefault();
         // End point 
         axios.post('/api/login', formData)
         .then((response) => {
-          window.location.href = '/card/:id';
+          navigate('/')
           // history.push('/');
         })
         .catch((error) => {
@@ -93,8 +96,7 @@ export const BlogForm = () => {
     };
     
   return (
-    <form>
-      <div>
+
         <div style={FormDivStyle}>
           <form onSubmit={handleSubmit} style={FormStyle}>
             <div className="text-2xl pb-16 pt-4">Publish a blog</div>
@@ -182,8 +184,7 @@ export const BlogForm = () => {
             {error && <div style={invalidCredintials}>{error}</div>}
           </form>
         </div>
-      </div>
-    </form>
+ 
   );
 };
 

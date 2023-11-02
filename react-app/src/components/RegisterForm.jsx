@@ -50,7 +50,7 @@ const SignUpForm = () => {
     username: '',
     email:'',
     password: '',
-    password2: '',
+    // password2: '',
   });
 
   const handleChange = (e) => {
@@ -92,16 +92,16 @@ const SignUpForm = () => {
     const isPasswordValid = validatePassword(formData.password);
     if (!isPasswordValid) {
       setIsPasswordValid(false);
-    } else // Password match Validation
-    if (formData.password !== formData.password2) {
-      const matchPass = document.getElementById("form");
-      const isMatchPass = document.createElement("span");
-      // styling the error message 
-      isMatchPass.style.color = "red";
-      isMatchPass.style.fontSize = '0.65rem';
-      isMatchPass.textContent = "Passwords don't match";
-      matchPass.appendChild(isMatchPass)
-    } else {
+    // } else // Password match Validation
+    // if (formData.password !== formData.password2) {
+    //   const matchPass = document.getElementById("form");
+    //   const isMatchPass = document.createElement("span");
+    //   // styling the error message 
+    //   isMatchPass.style.color = "red";
+    //   isMatchPass.style.fontSize = '0.65rem';
+    //   isMatchPass.textContent = "Passwords don't match";
+    //   matchPass.appendChild(isMatchPass)
+    // } else {
       // Endpoint
       fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
@@ -181,7 +181,7 @@ const SignUpForm = () => {
         <span style={erroMessage}>Password should be 8-20 characters with at least 1 letter, 1 number and 1 special character</span>
       )}
       {/* REGEX ^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}$ */}
-      <div id="form">
+      {/* <div id="form">
         <div>
         <label></label>
         <input
@@ -193,7 +193,7 @@ const SignUpForm = () => {
           onChange={handleChange}
         />
         </div>
-      </div>
+      </div> */}
       {/* <span style={erroMessage}>Passwords don't match</span> */}
       {/* REGEX ^[A-Za-z0-9+_.-]+@(.+)$ */}
       <button type="submit"className=" px-3 pb-2 text-[#4C7581] bg-white border border-2 border-[#4C7581]  focus:outline-none hover:bg-[#4C7581] hover:text-[#FFFFFF] text-xs font-semibold rounded-lg text-xs px-5 py-2 mt-16 mb-8 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Sign Up</button>
